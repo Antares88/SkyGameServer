@@ -23,12 +23,18 @@ SkyGameServer.MAIN = METHOD({
 						}, {
 							notValid : () => {
 								response({
-									statusCode : 400
+									statusCode : 400,
+									headers : {
+										'Access-Control-Allow-Origin' : '*'
+									}
 								});
 							},
 							success : (savedData) => {
 								response({
 									contentType : 'application/json',
+									headers : {
+										'Access-Control-Allow-Origin' : '*'
+									},
 									content : JSON.stringify({
 										name : savedData.name,
 										point : savedData.point
@@ -40,14 +46,20 @@ SkyGameServer.MAIN = METHOD({
 					
 					else {
 						response({
-							statusCode : 400
+							statusCode : 400,
+							headers : {
+								'Access-Control-Allow-Origin' : '*'
+							}
 						});
 					}
 				}
 				
 				else {
 					response({
-						statusCode : 404
+						statusCode : 404,
+						headers : {
+							'Access-Control-Allow-Origin' : '*'
+						}
 					});
 				}
 				
@@ -61,6 +73,9 @@ SkyGameServer.MAIN = METHOD({
 				}, (savedDataSet) => {
 					response({
 						contentType : 'application/json',
+						headers : {
+							'Access-Control-Allow-Origin' : '*'
+						},
 						content : JSON.stringify({
 							list : savedDataSet
 						})
