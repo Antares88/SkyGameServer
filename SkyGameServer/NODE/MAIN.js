@@ -76,6 +76,9 @@ SkyGameServer.MAIN = METHOD({
 			if (uri === 'rank/list') {
 				
 				SkyGameServer.RankModel.find({
+					sort : {
+						point : -1
+					},
 					count : params.count === undefined ? 100 : params.count
 				}, (savedDataSet) => {
 					response({
