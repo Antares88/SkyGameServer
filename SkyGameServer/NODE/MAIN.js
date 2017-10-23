@@ -30,15 +30,22 @@ SkyGameServer.MAIN = METHOD({
 								});
 							},
 							success : (savedData) => {
-								response({
-									contentType : 'application/json',
-									headers : {
-										'Access-Control-Allow-Origin' : '*'
-									},
-									content : JSON.stringify({
-										name : savedData.name,
-										point : savedData.point
-									})
+								
+								SkyGameServer.RankModel.count({
+									filter : {
+										point : {
+											$gt : savedData.point
+										}
+									}
+								}, (count) => {
+									
+									response({
+										contentType : 'application/json',
+										headers : {
+											'Access-Control-Allow-Origin' : '*'
+										},
+										content : count + 1
+									});
 								});
 							}
 						});
@@ -69,7 +76,7 @@ SkyGameServer.MAIN = METHOD({
 			if (uri === 'rank/list') {
 				
 				SkyGameServer.RankModel.find({
-					count : params.count
+					count : params.count === undefined ? 100 : params.count
 				}, (savedDataSet) => {
 					response({
 						contentType : 'application/json',
