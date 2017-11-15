@@ -9,7 +9,8 @@
 BOOT({
 	NODE_CONFIG : {
 		SkyGameServer : {
-			secureKey : '{{보안 키}}'
+			secureKey : '{{보안 키}}',
+			adminPassword : '{{관리자 비밀번호}}'
 		}
 	}
 });
@@ -23,6 +24,9 @@ BOOT({
 
 ## `rank/list?count={{가져올 개수}}`
 랭킹 목록을 가져옵니다. `{{가져올 개수}}`를 입력하여 몇 개를 가져올지 지정합니다. 최대 1000개를 가져올 수 있습니다.
+
+## `SkyGameServer/admin`
+푸시메시지를 보내는 등 여러가지 기능을 사용할 수 있는 관리자 페이지에 접속합니다.
 
 ## 라이센스
 [MIT](LICENSE)

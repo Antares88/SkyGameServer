@@ -2,6 +2,9 @@ SkyGameServer.MAIN = METHOD({
 	
 	run : (addRequestHandler) => {
 		
+		let invalidPurchaseLogDB = SkyGameServer.LOG_DB('invalidPurchaseLogDB');
+		let validPurchaseLogDB = SkyGameServer.LOG_DB('validPurchaseLogDB');
+		
 		addRequestHandler((requestInfo, response) => {
 
 			let uri = requestInfo.uri;
@@ -91,6 +94,92 @@ SkyGameServer.MAIN = METHOD({
 						})
 					});
 				});
+				
+				return false;
+			}
+			
+			if (uri === 'validatepurchase/android') {
+				
+				let productId = params.productId;
+				let purchaseToken = params.purchaseToken;
+				
+				if (productId !== undefined && purchaseToken !== undefined) {
+					
+					UIAP.GOOGLE_PLAY_PURCHASE_VALIDATE({
+						productId : productId,
+						purchaseToken : purchaseToken
+					}, (isValid) => {
+						
+						// 불법 결제면 로그 남기기
+						if (isValid !== true) {
+							invalidPurchaseLogDB.log({
+								productId : productId,
+								purchaseToken : purchaseToken
+							});
+						}
+						
+						else {
+							validPurchaseLogDB.log({
+								productId : productId,
+								purchaseToken : purchaseToken
+							});
+						}
+						
+						response({
+							contentType : 'application/json',
+							headers : {
+								'Access-Control-Allow-Origin' : '*'
+							},
+							content : JSON.stringify({
+								productId : productId,
+								isValid : isValid
+							})
+						});
+					});
+				}
+				
+				return false;
+			}
+			
+			if (uri === 'validatepurchase/ios') {
+				
+				let productId = params.productId;
+				let purchaseReceipt = params.purchaseReceipt;
+				
+				if (productId !== undefined && purchaseReceipt !== undefined) {
+					
+					UIAP.APP_STORE_PURCHASE_VALIDATE({
+						productId : productId,
+						receipt : purchaseReceipt
+					}, (isValid) => {
+						
+						// 불법 결제면 로그 남기기
+						if (isValid !== true) {
+							invalidPurchaseLogDB.log({
+								productId : productId,
+								purchaseReceipt : purchaseReceipt
+							});
+						}
+						
+						else {
+							validPurchaseLogDB.log({
+								productId : productId,
+								purchaseReceipt : purchaseReceipt
+							});
+						}
+						
+						response({
+							contentType : 'application/json',
+							headers : {
+								'Access-Control-Allow-Origin' : '*'
+							},
+							content : JSON.stringify({
+								productId : productId,
+								isValid : isValid
+							})
+						});
+					});
+				}
 				
 				return false;
 			}

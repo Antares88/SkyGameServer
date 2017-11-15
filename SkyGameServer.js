@@ -16,6 +16,14 @@ BOOT({
 		
 		SkyGameServer : {
 			secureKey : 'test123'
+		},
+		
+		UIAP : {
+			GooglePlay : {
+				clientEmail : '~~~@~~~.iam.gserviceaccount.com',
+				privateKey : '-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n',
+				appPackageName : 'com.example.App'
+			}
 		}
 	}
 });
