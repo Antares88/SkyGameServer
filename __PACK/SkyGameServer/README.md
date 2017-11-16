@@ -8,9 +8,19 @@
 ```
 BOOT({
 	NODE_CONFIG : {
+		
 		SkyGameServer : {
 			secureKey : '{{보안 키}}',
 			adminPassword : '{{관리자 비밀번호}}'
+		},
+		
+		// 결제 검증 관련 설정
+		UIAP : {
+			GooglePlay : {
+				clientEmail : '~~~@~~~.iam.gserviceaccount.com',
+				privateKey : '-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n',
+				appPackageName : 'com.example.App'
+			}
 		}
 	}
 });
@@ -24,6 +34,16 @@ BOOT({
 
 ## `rank/list?count={{가져올 개수}}`
 랭킹 목록을 가져옵니다. `{{가져올 개수}}`를 입력하여 몇 개를 가져올지 지정합니다. 최대 1000개를 가져올 수 있습니다.
+
+## `validatepurchase/android`
+Android 결제를 검증합니다. `POST` 방식으로만 검증할 수 있습니다. 파라미터 목록은 다음과 같습니다.
+- `productId` 상품의 이름
+- `purchaseToken` 결제 토큰 문자열
+
+## `validatepurchase/ios`
+iOS 결제를 검증합니다. `POST` 방식으로만 검증할 수 있습니다. 파라미터 목록은 다음과 같습니다.
+- `productId` 상품의 이름
+- `purchaseReceipt` 결제 영수증 문자열
 
 ## `SkyGameServer/admin`
 푸시메시지를 보내는 등 여러가지 기능을 사용할 수 있는 관리자 페이지에 접속합니다.

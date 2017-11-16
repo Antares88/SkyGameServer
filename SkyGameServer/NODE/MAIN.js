@@ -5,6 +5,8 @@ SkyGameServer.MAIN = METHOD({
 		let invalidPurchaseLogDB = SkyGameServer.LOG_DB('invalidPurchaseLogDB');
 		let validPurchaseLogDB = SkyGameServer.LOG_DB('validPurchaseLogDB');
 		
+		let pushKeyDB = SkyGameServer.DB('PushKey');
+		
 		addRequestHandler((requestInfo, response) => {
 
 			let uri = requestInfo.uri;
@@ -177,6 +179,29 @@ SkyGameServer.MAIN = METHOD({
 								productId : productId,
 								isValid : isValid
 							})
+						});
+					});
+				}
+				
+				return false;
+			}
+			
+			if (uri === 'savepushkey/android') {
+				
+				let pushKey = params.pushKey;
+				
+				if (pushKey !== undefined) {
+					
+					pushKeyDB.create({
+						androidKey : pushKey
+					}, (savedData) => {
+						
+						response({
+							content : JSON.stringify(savedData),
+							contentType : 'application/json',
+							headers : {
+								'Access-Control-Allow-Origin' : '*'
+							}
 						});
 					});
 				}
