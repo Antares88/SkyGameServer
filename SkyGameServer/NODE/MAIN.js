@@ -192,17 +192,58 @@ SkyGameServer.MAIN = METHOD({
 				
 				if (pushKey !== undefined) {
 					
-					pushKeyDB.create({
-						androidKey : pushKey
-					}, (savedData) => {
-						
-						response({
-							content : JSON.stringify(savedData),
-							contentType : 'application/json',
-							headers : {
-								'Access-Control-Allow-Origin' : '*'
-							}
-						});
+					pushKeyDB.checkExists({
+						filter : {
+							androidKey : pushKey
+						}
+					}, (exists) => {
+						if (exists !== true) {
+							
+							pushKeyDB.create({
+								androidKey : pushKey
+							}, (savedData) => {
+								
+								response({
+									content : JSON.stringify(savedData),
+									contentType : 'application/json',
+									headers : {
+										'Access-Control-Allow-Origin' : '*'
+									}
+								});
+							});
+						}
+					});
+				}
+				
+				return false;
+			}
+			
+			if (uri === 'savepushkey/ios') {
+				
+				let pushKey = params.pushKey;
+				
+				if (pushKey !== undefined) {
+					
+					pushKeyDB.checkExists({
+						filter : {
+							iosKey : pushKey
+						}
+					}, (exists) => {
+						if (exists !== true) {
+							
+							pushKeyDB.create({
+								iosKey : pushKey
+							}, (savedData) => {
+								
+								response({
+									content : JSON.stringify(savedData),
+									contentType : 'application/json',
+									headers : {
+										'Access-Control-Allow-Origin' : '*'
+									}
+								});
+							});
+						}
 					});
 				}
 				

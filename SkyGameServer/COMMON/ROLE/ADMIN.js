@@ -1,0 +1,1 @@
+SkyGameServer('ROLE').ADMIN = 'Admin';

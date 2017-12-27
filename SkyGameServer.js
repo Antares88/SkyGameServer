@@ -15,6 +15,7 @@ BOOT({
 		dbName : 'SkyGameServer-test',
 		
 		SkyGameServer : {
+			adminPassword : 'test123',
 			secureKey : 'test123'
 		},
 		
@@ -23,6 +24,17 @@ BOOT({
 				clientEmail : '~~~@~~~.iam.gserviceaccount.com',
 				privateKey : '-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n',
 				appPackageName : 'com.example.App'
+			}
+		},
+
+		UPUSH : {
+			Android : {
+				serverKey : '~~~'
+			},
+			IOS : {
+				certFilePath : './apn/cert.pem',
+				keyFilePath : './apn/key.pem',
+				password : 'test123'
 			}
 		}
 	}
