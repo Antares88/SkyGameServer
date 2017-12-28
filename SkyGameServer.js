@@ -19,6 +19,7 @@ BOOT({
 			secureKey : 'test123'
 		},
 		
+		// 결제 검증 관련 설정
 		UIAP : {
 			GooglePlay : {
 				clientEmail : '~~~@~~~.iam.gserviceaccount.com',
@@ -27,6 +28,7 @@ BOOT({
 			}
 		},
 
+		// 푸시 관련 설정
 		UPUSH : {
 			Android : {
 				serverKey : '~~~'

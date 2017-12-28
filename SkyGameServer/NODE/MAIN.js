@@ -102,41 +102,53 @@ SkyGameServer.MAIN = METHOD({
 			
 			if (uri === 'validatepurchase/android') {
 				
-				let productId = params.productId;
-				let purchaseToken = params.purchaseToken;
-				
-				if (productId !== undefined && purchaseToken !== undefined) {
+				if (method === 'POST') {
 					
-					UIAP.GOOGLE_PLAY_PURCHASE_VALIDATE({
-						productId : productId,
-						purchaseToken : purchaseToken
-					}, (isValid) => {
+					let productId = params.productId;
+					let purchaseToken = params.purchaseToken;
+					
+					if (productId !== undefined && purchaseToken !== undefined) {
 						
-						// 불법 결제면 로그 남기기
-						if (isValid !== true) {
-							invalidPurchaseLogDB.log({
-								productId : productId,
-								purchaseToken : purchaseToken
+						UIAP.GOOGLE_PLAY_PURCHASE_VALIDATE({
+							productId : productId,
+							purchaseToken : purchaseToken
+						}, (isValid) => {
+							
+							// 불법 결제면 로그 남기기
+							if (isValid !== true) {
+								invalidPurchaseLogDB.log({
+									productId : productId,
+									purchaseToken : purchaseToken
+								});
+							}
+							
+							else {
+								validPurchaseLogDB.log({
+									productId : productId,
+									purchaseToken : purchaseToken
+								});
+							}
+							
+							response({
+								contentType : 'application/json',
+								headers : {
+									'Access-Control-Allow-Origin' : '*'
+								},
+								content : JSON.stringify({
+									productId : productId,
+									isValid : isValid
+								})
 							});
-						}
-						
-						else {
-							validPurchaseLogDB.log({
-								productId : productId,
-								purchaseToken : purchaseToken
-							});
-						}
-						
-						response({
-							contentType : 'application/json',
-							headers : {
-								'Access-Control-Allow-Origin' : '*'
-							},
-							content : JSON.stringify({
-								productId : productId,
-								isValid : isValid
-							})
 						});
+					}
+				}
+				
+				else {
+					response({
+						statusCode : 404,
+						headers : {
+							'Access-Control-Allow-Origin' : '*'
+						}
 					});
 				}
 				
@@ -145,41 +157,53 @@ SkyGameServer.MAIN = METHOD({
 			
 			if (uri === 'validatepurchase/ios') {
 				
-				let productId = params.productId;
-				let purchaseReceipt = params.purchaseReceipt;
+				if (method === 'POST') {
 				
-				if (productId !== undefined && purchaseReceipt !== undefined) {
+					let productId = params.productId;
+					let purchaseReceipt = params.purchaseReceipt;
 					
-					UIAP.APP_STORE_PURCHASE_VALIDATE({
-						productId : productId,
-						receipt : purchaseReceipt
-					}, (isValid) => {
+					if (productId !== undefined && purchaseReceipt !== undefined) {
 						
-						// 불법 결제면 로그 남기기
-						if (isValid !== true) {
-							invalidPurchaseLogDB.log({
-								productId : productId,
-								purchaseReceipt : purchaseReceipt
+						UIAP.APP_STORE_PURCHASE_VALIDATE({
+							productId : productId,
+							receipt : purchaseReceipt
+						}, (isValid) => {
+							
+							// 불법 결제면 로그 남기기
+							if (isValid !== true) {
+								invalidPurchaseLogDB.log({
+									productId : productId,
+									purchaseReceipt : purchaseReceipt
+								});
+							}
+							
+							else {
+								validPurchaseLogDB.log({
+									productId : productId,
+									purchaseReceipt : purchaseReceipt
+								});
+							}
+							
+							response({
+								contentType : 'application/json',
+								headers : {
+									'Access-Control-Allow-Origin' : '*'
+								},
+								content : JSON.stringify({
+									productId : productId,
+									isValid : isValid
+								})
 							});
-						}
-						
-						else {
-							validPurchaseLogDB.log({
-								productId : productId,
-								purchaseReceipt : purchaseReceipt
-							});
-						}
-						
-						response({
-							contentType : 'application/json',
-							headers : {
-								'Access-Control-Allow-Origin' : '*'
-							},
-							content : JSON.stringify({
-								productId : productId,
-								isValid : isValid
-							})
 						});
+					}
+				}
+				
+				else {
+					response({
+						statusCode : 404,
+						headers : {
+							'Access-Control-Allow-Origin' : '*'
+						}
 					});
 				}
 				
@@ -188,29 +212,41 @@ SkyGameServer.MAIN = METHOD({
 			
 			if (uri === 'savepushkey/android') {
 				
-				let pushKey = params.pushKey;
-				
-				if (pushKey !== undefined) {
+				if (method === 'POST') {
 					
-					pushKeyDB.checkExists({
-						filter : {
-							androidKey : pushKey
-						}
-					}, (exists) => {
-						if (exists !== true) {
-							
-							pushKeyDB.create({
+					let pushKey = params.pushKey;
+					
+					if (pushKey !== undefined) {
+						
+						pushKeyDB.checkExists({
+							filter : {
 								androidKey : pushKey
-							}, (savedData) => {
+							}
+						}, (exists) => {
+							if (exists !== true) {
 								
-								response({
-									content : JSON.stringify(savedData),
-									contentType : 'application/json',
-									headers : {
-										'Access-Control-Allow-Origin' : '*'
-									}
+								pushKeyDB.create({
+									androidKey : pushKey
+								}, (savedData) => {
+									
+									response({
+										content : JSON.stringify(savedData),
+										contentType : 'application/json',
+										headers : {
+											'Access-Control-Allow-Origin' : '*'
+										}
+									});
 								});
-							});
+							}
+						});
+					}
+				}
+				
+				else {
+					response({
+						statusCode : 404,
+						headers : {
+							'Access-Control-Allow-Origin' : '*'
 						}
 					});
 				}
@@ -220,29 +256,41 @@ SkyGameServer.MAIN = METHOD({
 			
 			if (uri === 'savepushkey/ios') {
 				
-				let pushKey = params.pushKey;
-				
-				if (pushKey !== undefined) {
+				if (method === 'POST') {
 					
-					pushKeyDB.checkExists({
-						filter : {
-							iosKey : pushKey
-						}
-					}, (exists) => {
-						if (exists !== true) {
-							
-							pushKeyDB.create({
+					let pushKey = params.pushKey;
+					
+					if (pushKey !== undefined) {
+						
+						pushKeyDB.checkExists({
+							filter : {
 								iosKey : pushKey
-							}, (savedData) => {
+							}
+						}, (exists) => {
+							if (exists !== true) {
 								
-								response({
-									content : JSON.stringify(savedData),
-									contentType : 'application/json',
-									headers : {
-										'Access-Control-Allow-Origin' : '*'
-									}
+								pushKeyDB.create({
+									iosKey : pushKey
+								}, (savedData) => {
+									
+									response({
+										content : JSON.stringify(savedData),
+										contentType : 'application/json',
+										headers : {
+											'Access-Control-Allow-Origin' : '*'
+										}
+									});
 								});
-							});
+							}
+						});
+					}
+				}
+				
+				else {
+					response({
+						statusCode : 404,
+						headers : {
+							'Access-Control-Allow-Origin' : '*'
 						}
 					});
 				}

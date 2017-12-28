@@ -8,6 +8,8 @@
 ```
 BOOT({
 	NODE_CONFIG : {
+	
+		dbName : '{{DB 이름}}',
 		
 		SkyGameServer : {
 			secureKey : '{{보안 키}}',
@@ -20,6 +22,18 @@ BOOT({
 				clientEmail : '~~~@~~~.iam.gserviceaccount.com',
 				privateKey : '-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n',
 				appPackageName : 'com.example.App'
+			}
+		},
+
+		// 푸시 관련 설정
+		UPUSH : {
+			Android : {
+				serverKey : '~~~'
+			},
+			IOS : {
+				certFilePath : './apn/cert.pem',
+				keyFilePath : './apn/key.pem',
+				password : 'test123'
 			}
 		}
 	}
@@ -44,6 +58,14 @@ Android 결제를 검증합니다. `POST` 방식으로만 검증할 수 있습�
 iOS 결제를 검증합니다. `POST` 방식으로만 검증할 수 있습니다. 파라미터 목록은 다음과 같습니다.
 - `productId` 상품의 이름
 - `purchaseReceipt` 결제 영수증 문자열
+
+## `savepushkey/android`
+Android 푸시 키를 저장합니다. `POST` 방식으로만 검증할 수 있습니다. 파라미터 목록은 다음과 같습니다.
+- `pushKey` 푸시 키
+
+## `savepushkey/ios`
+iOS 푸시 키를 저장합니다. `POST` 방식으로만 검증할 수 있습니다. 파라미터 목록은 다음과 같습니다.
+- `pushKey` 푸시 키
 
 ## `SkyGameServer/admin`
 푸시메시지를 보내는 등 여러가지 기능을 사용할 수 있는 관리자 페이지에 접속합니다.
