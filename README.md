@@ -5,7 +5,7 @@
 프로젝트의 `DEPENDENCY` 파일에 `Hanul/SkyGameServer`를 추가합니다.
 
 ## 설정
-```
+```javascript
 BOOT({
 	NODE_CONFIG : {
 	
