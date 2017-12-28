@@ -40,6 +40,9 @@ BOOT({
 });
 ```
 
+* [구글 플레이 결제 검증 기능 사용 전 준비사항](https://github.com/Hanul/UIAP#%EC%82%AC%EC%9A%A9-%EC%A0%84-%EC%A4%80%EB%B9%84%EC%82%AC%ED%95%AD)
+* [푸시 기능 사용 전 준비사항](https://github.com/Hanul/UPUSH#%EC%82%AC%EC%9A%A9-%EC%A0%84-%EC%A4%80%EB%B9%84%EC%82%AC%ED%95%AD)
+
 ## `rank/save`
 랭킹을 저장합니다. `POST` 방식으로만 저장할 수 있습니다. 파라미터 목록은 다음과 같습니다.
 - `name` 랭킹의 이름
