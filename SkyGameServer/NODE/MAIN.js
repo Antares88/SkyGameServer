@@ -218,12 +218,12 @@ SkyGameServer.MAIN = METHOD({
 					
 					if (pushKey !== undefined) {
 						
-						pushKeyDB.checkExists({
+						pushKeyDB.get({
 							filter : {
 								androidKey : pushKey
 							}
-						}, (exists) => {
-							if (exists !== true) {
+						}, {
+							notExists : () => {
 								
 								pushKeyDB.create({
 									androidKey : pushKey
@@ -236,6 +236,16 @@ SkyGameServer.MAIN = METHOD({
 											'Access-Control-Allow-Origin' : '*'
 										}
 									});
+								});
+							},
+							
+							success : (savedData) => {
+								response({
+									content : JSON.stringify(savedData),
+									contentType : 'application/json',
+									headers : {
+										'Access-Control-Allow-Origin' : '*'
+									}
 								});
 							}
 						});
@@ -266,8 +276,8 @@ SkyGameServer.MAIN = METHOD({
 							filter : {
 								iosKey : pushKey
 							}
-						}, (exists) => {
-							if (exists !== true) {
+						}, {
+							notExists : () => {
 								
 								pushKeyDB.create({
 									iosKey : pushKey
@@ -280,6 +290,16 @@ SkyGameServer.MAIN = METHOD({
 											'Access-Control-Allow-Origin' : '*'
 										}
 									});
+								});
+							},
+							
+							success : (savedData) => {
+								response({
+									content : JSON.stringify(savedData),
+									contentType : 'application/json',
+									headers : {
+										'Access-Control-Allow-Origin' : '*'
+									}
 								});
 							}
 						});
