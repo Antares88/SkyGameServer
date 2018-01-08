@@ -215,6 +215,7 @@ SkyGameServer.MAIN = METHOD({
 				if (method === 'POST') {
 					
 					let pushKey = params.pushKey;
+					let language = params.language;
 					
 					if (pushKey !== undefined) {
 						
@@ -226,7 +227,8 @@ SkyGameServer.MAIN = METHOD({
 							notExists : () => {
 								
 								pushKeyDB.create({
-									androidKey : pushKey
+									androidKey : pushKey,
+									language : language
 								}, (savedData) => {
 									
 									response({
@@ -240,12 +242,19 @@ SkyGameServer.MAIN = METHOD({
 							},
 							
 							success : (savedData) => {
-								response({
-									content : JSON.stringify(savedData),
-									contentType : 'application/json',
-									headers : {
-										'Access-Control-Allow-Origin' : '*'
-									}
+								
+								pushKeyDB.update({
+									id : savedData.id,
+									language : language
+								}, (savedData) => {
+									
+									response({
+										content : JSON.stringify(savedData),
+										contentType : 'application/json',
+										headers : {
+											'Access-Control-Allow-Origin' : '*'
+										}
+									});
 								});
 							}
 						});
@@ -269,6 +278,7 @@ SkyGameServer.MAIN = METHOD({
 				if (method === 'POST') {
 					
 					let pushKey = params.pushKey;
+					let language = params.language;
 					
 					if (pushKey !== undefined) {
 						
@@ -280,7 +290,8 @@ SkyGameServer.MAIN = METHOD({
 							notExists : () => {
 								
 								pushKeyDB.create({
-									iosKey : pushKey
+									iosKey : pushKey,
+									language : language
 								}, (savedData) => {
 									
 									response({
@@ -294,12 +305,19 @@ SkyGameServer.MAIN = METHOD({
 							},
 							
 							success : (savedData) => {
-								response({
-									content : JSON.stringify(savedData),
-									contentType : 'application/json',
-									headers : {
-										'Access-Control-Allow-Origin' : '*'
-									}
+								
+								pushKeyDB.update({
+									id : savedData.id,
+									language : language
+								}, (savedData) => {
+									
+									response({
+										content : JSON.stringify(savedData),
+										contentType : 'application/json',
+										headers : {
+											'Access-Control-Allow-Origin' : '*'
+										}
+									});
 								});
 							}
 						});

@@ -28,6 +28,21 @@ SkyGameServer.AdminRoom = OBJECT({
 				if (params !== undefined && checkIsAdmin() === true) {
 					
 					pushKeyDB.find({
+						filter : {
+							$or : [{
+								// 90일 이내 수정
+								lastUpdateTime : {
+									$gt : new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)
+								}
+							}, {
+								lastUpdateTime : TO_DELETE,
+								
+								// 90일 이내 생성
+								createTime : {
+									$gt : new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)
+								}
+							}]
+						},
 						isFindAll : true
 					}, EACH((pushKeyData) => {
 						
