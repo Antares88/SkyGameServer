@@ -27,45 +27,84 @@ SkyGameServer.AdminRoom = OBJECT({
 			on('sendPushMessage', (params) => {
 				if (params !== undefined && checkIsAdmin() === true) {
 					
-					pushKeyDB.find({
-						filter : {
-							$or : [{
-								// 90일 이내 수정
-								lastUpdateTime : {
-									$gt : new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)
-								}
-							}, {
-								lastUpdateTime : TO_DELETE,
+					let os = params.os;
+					let language = params.language;
+					let message = params.message;
+					
+					if (VALID.notEmpty(os) !== true) {
+						os = undefined;
+					}
+					if (VALID.notEmpty(language) !== true) {
+						language = undefined;
+					}
+					
+					if (VALID.notEmpty(message) === true) {
+						
+						let filter1 = {
+							// 90일 이내 수정
+							lastUpdateTime : {
+								$gt : new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)
+							}
+						};
+						let filter2 = {
+							lastUpdateTime : TO_DELETE,
+							
+							// 90일 이내 생성
+							createTime : {
+								$gt : new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)
+							}
+						};
+						
+						if (os === 'android') {
+							filter1.androidKey = {
+								$ne : TO_DELETE
+							};
+							filter2.androidKey = {
+								$ne : TO_DELETE
+							};
+						}
+						if (os === 'ios') {
+							filter1.iosKey = {
+								$ne : TO_DELETE
+							};
+							filter2.iosKey = {
+								$ne : TO_DELETE
+							};
+						}
+						
+						if (language !== undefined) {
+							filter1.language = language;
+							filter2.language = language;
+						}
+						
+						pushKeyDB.find({
+							filter : {
+								$or : [filter1, filter2]
+							},
+							isFindAll : true
+						}, EACH((pushKeyData) => {
+							
+							if (pushKeyData.androidKey !== undefined) {
 								
-								// 90일 이내 생성
-								createTime : {
-									$gt : new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)
-								}
-							}]
-						},
-						isFindAll : true
-					}, EACH((pushKeyData) => {
-						
-						if (pushKeyData.androidKey !== undefined) {
+								UPUSH.ANDROID_PUSH({
+									regId : pushKeyData.androidKey,
+									data : {
+										message : message
+									}
+								});
+							}
 							
-							UPUSH.ANDROID_PUSH({
-								regId : pushKeyData.androidKey,
-								data : {
-									message : params.message
-								}
-							});
-						}
-						
-						if (pushKeyData.iosKey !== undefined) {
-							
-							UPUSH.IOS_PUSH({
-								badge : 1,
-								token : pushKeyData.iosKey,
-								sound : 'ping.aiff',
-								message : params.message
-							});
-						}
-					}));
+							if (pushKeyData.iosKey !== undefined) {
+								
+								UPUSH.IOS_PUSH({
+									badge : 1,
+									token : pushKeyData.iosKey,
+									sound : 'ping.aiff',
+									message : message
+								});
+							}
+						}));
+					}
 				}
 			});
 		});

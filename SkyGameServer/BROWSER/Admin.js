@@ -56,16 +56,75 @@ SkyGameServer.Admin = CLASS({
 						on : {
 							tap : () => {
 								
-								let message = prompt('메시지 내용을 입력해주세요.');
-								
-								if (message !== null && message !== '') {
-									adminRoom.send({
-										methodName : 'sendPushMessage',
-										data : {
-											message : message
+								let form;
+								let modal = UUI.MODAL({
+									style : {
+										backgroundColor : '#191971',
+										width : 280,
+										border : '1px solid #fff',
+										padding : 10
+									},
+									xIcon : IMG({
+										src : SkyGameServer.R('x.png')
+									}),
+									c : [H2({
+										c : MSG({
+											ko : '푸시 메시지 보내기'
+										})
+									}), form = UUI.VALID_FORM({
+										c : [
+										UUI.FULL_SELECT({
+											style : {
+												marginTop : 10
+											},
+											name : 'os',
+											options : [OPTION({
+												c : '전체'
+											}), OPTION({
+												value : 'android',
+												c : 'Android'
+											}), OPTION({
+												value : 'ios',
+												c : 'iOS'
+											})]
+										}),
+										
+										UUI.FULL_INPUT({
+											style : {
+												marginTop : 5
+											},
+											name : 'language',
+											placeholder : '언어 (예: ko-KR, 입력하지 않으면 전체)'
+										}),
+										
+										UUI.FULL_TEXTAREA({
+											style : {
+												marginTop : 5
+											},
+											name : 'message',
+											placeholder : '메시지'
+										}),
+										
+										UUI.FULL_SUBMIT({
+											style : {
+												marginTop : 5
+											}
+										})],
+										on : {
+											submit : () => {
+												
+												let data = form.getData();
+												
+												adminRoom.send({
+													methodName : 'sendPushMessage',
+													data : data
+												});
+												
+												modal.close();
+											}
 										}
-									});
-								}
+									})]
+								});
 							}
 						}
 					}),
