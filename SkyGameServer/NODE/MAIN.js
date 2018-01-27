@@ -102,9 +102,9 @@ SkyGameServer.MAIN = METHOD({
 			if (uri === 'rank/count') {
 				
 				SkyGameServer.RankModel.count({
-					filter : {
+					filter : params.point === undefined ? undefined : {
 						point : {
-							$gt : params.point
+							$gt : REAL(params.point)
 						}
 					}
 				}, (count) => {
