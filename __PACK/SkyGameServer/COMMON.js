@@ -1,1 +1,1 @@
-SkyGameServer.RankModel=OBJECT({preset:()=>{return SkyGameServer.MODEL},params:()=>{let e={name:{notEmpty:!0,size:{max:255}},point:{notEmpty:!0,integer:!0}};return{name:"Rank",methodConfig:{create:{valid:VALID(e)},update:!1,remove:!1}}}}),SkyGameServer("ROLE").ADMIN="Admin";
+SkyGameServer.RankModel=OBJECT({preset:()=>{return SkyGameServer.MODEL},params:()=>{let e={name:{notEmpty:!0,size:{max:255}},point:{notEmpty:!0,real:!0}};return{name:"Rank",methodConfig:{create:{valid:VALID(e)},update:!1,remove:!1}}}}),SkyGameServer("ROLE").ADMIN="Admin";

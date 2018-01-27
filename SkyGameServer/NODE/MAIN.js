@@ -86,10 +86,13 @@ SkyGameServer.MAIN = METHOD({
 					count : params.count === undefined ? 100 : params.count
 				}, (savedDataSet) => {
 					response({
+						contentType : 'application/json',
 						headers : {
 							'Access-Control-Allow-Origin' : '*'
 						},
-						content : count
+						content : JSON.stringify({
+							list : savedDataSet
+						})
 					});
 				});
 				
@@ -98,15 +101,18 @@ SkyGameServer.MAIN = METHOD({
 			
 			if (uri === 'rank/count') {
 				
-				SkyGameServer.RankModel.count((count) => {
+				SkyGameServer.RankModel.count({
+					filter : {
+						point : {
+							$gt : params.point
+						}
+					}
+				}, (count) => {
 					response({
-						contentType : 'application/json',
 						headers : {
 							'Access-Control-Allow-Origin' : '*'
 						},
-						content : JSON.stringify({
-							list : savedDataSet
-						})
+						content : count
 					});
 				});
 				

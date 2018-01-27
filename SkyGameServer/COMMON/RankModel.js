@@ -17,7 +17,7 @@ SkyGameServer.RankModel = OBJECT({
 			
 			point : {
 				notEmpty : true,
-				integer : true
+				real : true
 			}
 		};
 		

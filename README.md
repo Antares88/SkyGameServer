@@ -56,6 +56,9 @@ BOOT({
 ## `rank/count`
 전체 랭킹 개수를 가져옵니다. 랭킹이 상위 몇 % 인지 알기 위해 필요합니다.
 
+## `rank/count?point={{점수}}`
+주어진 점수보다 큰 점수를 받은 랭킹의 개수를 가져옵니다.
+
 ## `validatepurchase/android`
 Android 결제를 검증합니다. `POST` 방식으로만 검증할 수 있습니다. 파라미터 목록은 다음과 같습니다.
 - `productId` 상품의 이름
